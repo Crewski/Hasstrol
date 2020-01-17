@@ -29,3 +29,4 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+/platforms/android/app/google-services.json

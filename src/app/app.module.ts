@@ -10,6 +10,9 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { WebsocketService } from './services/websocket.service';
 import { IonicStorageModule } from '@ionic/storage';
+import { Push } from '@ionic-native/push/ngx';
+import { HttpClientModule } from '@angular/common/http';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx'
 
 
 @NgModule({
@@ -19,14 +22,16 @@ import { IonicStorageModule } from '@ionic/storage';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    HttpClientModule
   ],
   providers: [
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     WebsocketService,
-    // InAppBrowser
+    Push,
+    InAppBrowser
   ],
   bootstrap: [AppComponent]
 })

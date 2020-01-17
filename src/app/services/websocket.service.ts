@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { EntityData } from '../models/entity_data';
+import { StorageService } from './storage.service';
 
 
 
@@ -10,7 +11,7 @@ import { EntityData } from '../models/entity_data';
 })
 export class WebsocketService {
 
-  myWebSocket: WebSocketSubject<any> = webSocket('wss://HAINSTNACE.duckdns.org:8123/api/websocket');
+  myWebSocket: WebSocketSubject<any>; 
   access_token = 'token'
   private isConnected: BehaviorSubject<boolean>;
   private messageID: number = 1;
@@ -18,7 +19,7 @@ export class WebsocketService {
   allEntities: EntityData[] = [];
   private entityObservalbe: BehaviorSubject<EntityData[]>;
 
-  constructor() {
+  constructor( private _storage: StorageService) {
     this.isConnected = new BehaviorSubject<boolean>(false);
     this.entityObservalbe = new BehaviorSubject<EntityData[]>([]);
 
@@ -33,9 +34,12 @@ export class WebsocketService {
   }
 
   public initialConnection(){
+    this._storage.getMainURL().then(url => {      
+      this.myWebSocket = webSocket(url.replace('http', 'ws') + '/api/websocket');
     this.myWebSocket.subscribe(message => {
       // console.log(message);
       this.handleMessage(message);
+    })
     })
   }
 
@@ -43,8 +47,10 @@ export class WebsocketService {
     console.log(message);
     switch (message.type) {
       case "auth_required":
-        var msg = { type: "auth", access_token: this.access_token };
+        this._storage.getToken().then(token => {
+        var msg = { type: "auth", access_token: token };
         this.sendMessage(msg);
+        })
         break;
       case "auth_ok":
         this.isConnected.next(true);

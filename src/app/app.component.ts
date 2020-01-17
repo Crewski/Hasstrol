@@ -4,6 +4,7 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { WebsocketService } from './services/websocket.service';
+import { NotificationService } from './services/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -33,7 +34,8 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private _ws: WebsocketService
+    private _ws: WebsocketService,
+    private _notification: NotificationService
   ) {
     this.initializeApp();
   }
@@ -43,6 +45,7 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this._ws.initialConnection();
+      this._notification.initNotifications();
     });
   }
 }
