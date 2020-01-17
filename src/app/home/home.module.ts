@@ -5,6 +5,8 @@ import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
+import { EntityTileComponent } from '../entity-tile/entity-tile.component';
+
 
 @NgModule({
   imports: [
@@ -16,8 +18,9 @@ import { HomePage } from './home.page';
         path: '',
         component: HomePage
       }
-    ])
+    ]),    
   ],
-  declarations: [HomePage]
+  declarations: [HomePage, 
+    EntityTileComponent]
 })
 export class HomePageModule {}

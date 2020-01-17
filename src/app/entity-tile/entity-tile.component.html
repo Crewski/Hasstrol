@@ -1,0 +1,10 @@
+
+    <div class="box">
+        <div class="content" (click)="onPress()" *ngIf="entity?.attributes" [ngClass]="active ? 'background-on' : 'background-off' ">            
+            <div>
+                <div class="icon-space" [ngClass]="active ? 'icon-on' : null"><span class="iconify" [attr.data-icon]='entity.attributes.icon' data-height="100%"></span></div>
+                <div class="name-space">{{entity.attributes.friendly_name}}</div>
+                <div class="state-space">{{entity.state | titlecase}}</div>
+            </div>
+        </div>
+    </div>
