@@ -28,6 +28,7 @@ export class WebsocketService {
         let msg = { type: 'get_states' };
         this.sendMessage(msg);
         let msgEvents = { type: 'subscribe_events', event_type: 'state_changed' };
+        console.log("Subscribed to events");
         this.sendMessage(msgEvents);
       }
     })
@@ -44,7 +45,7 @@ export class WebsocketService {
   }
 
   private handleMessage(message) {
-    console.log(message);
+    // console.log(message);
     switch (message.type) {
       case "auth_required":
         this._storage.getToken().then(token => {

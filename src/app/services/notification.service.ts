@@ -15,6 +15,7 @@ export class NotificationService {
 
 
   public initNotifications() {
+    console.log("Intitializing Notifications");
     if (!this._platform.is('cordova')) {
       console.warn('Push notifications not initialized. Cordova is not available - Run in physical device');
       return;
@@ -29,6 +30,12 @@ export class NotificationService {
         }
 
       });
+    this._push.createChannel({
+        id: "hasstrol",
+        description: "Hasstrol notification channel",
+        // The importance property goes from 1 = Lowest, 2 = Low, 3 = Normal, 4 = High and 5 = Highest.
+        importance: 3
+       }).then(() => console.log('Channel created'));
     const options: PushOptions = {
       android: {},
       ios: {
@@ -43,6 +50,7 @@ export class NotificationService {
     };
 
     const pushObject: PushObject = this._push.init(options);
+    pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
     pushObject.on('registration').subscribe((registration: any) => console.log('Device registered', registration));
     pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', notification));
     pushObject.on('accept').subscribe((notification: any) => {
