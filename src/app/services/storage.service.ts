@@ -8,15 +8,29 @@ export class StorageService {
 
   MAIN_URL = "mainurl";
   TOKEN = "token";
-  LONG_LIVED = "longlived"
+  LONG_LIVED = "longlived";
+  SAVED_ROOMS = "savedrooms";
 
-  public savedRooms = [
-    { name: "1st Floor", entities: ["light.front_door", "light.back_door", "light.kitchen_table", "light.kitchen_island", "light.under_cabinet"] },
-    { name: "Another Room", entities: ["light.garage_entrance", "sensor.washing_machine_current"] },
-    { name: "Third Room", entities: ["light.porch_light", "sensor.washing_machine_current"] }
-  ]
+  // public savedRooms = [
+  //   { name: "1st Floor", entities: ["light.front_door", "light.back_door", "light.kitchen_table", "light.kitchen_island", "light.under_cabinet"] },
+  //   { name: "Another Room", entities: ["light.garage_entrance", "sensor.washing_machine_current"] },
+  //   { name: "Third Room", entities: ["light.porch_light", "sensor.washing_machine_current"] }
+  // ]
+
+  public savedRooms = [];
 
   constructor(private _storage: Storage) {
+    this._storage.get(this.SAVED_ROOMS).then(rooms => this.savedRooms = rooms)
+  }
+
+  getSavedRoom(){
+    
+  }
+
+  setSavedRoom(index, roomData){
+    
+    this.savedRooms[index] = roomData;
+    this._storage.set(this.SAVED_ROOMS, this.savedRooms)
   }
 
   setMainURL(mainurl: string): Promise<boolean> {

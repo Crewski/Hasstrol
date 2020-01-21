@@ -14,7 +14,7 @@
 
 <ion-content class="room-page">
   <ion-grid class="ion-no-padding">
-    <ion-row >
+    <ion-row dragula="bag" [(dragulaModel)]="roomData.entities">
       <ion-col size="4" *ngFor="let entity of roomData.entities">
         <entity-tile [entity_id]="entity"></entity-tile>
       </ion-col>

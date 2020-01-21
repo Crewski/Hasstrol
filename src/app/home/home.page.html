@@ -1,8 +1,8 @@
 
 <ion-content  class="home-page">
   <ion-slides class="full" #roomSlides>
-    <ion-slide *ngFor="let room of _storage.savedRooms">
-      <app-room class="full" [roomData]="room"></app-room>
+    <ion-slide *ngFor="let room of _storage.savedRooms; let i = index">
+      <app-room class="full" [roomData]="room" [index]="i"></app-room>
     </ion-slide>
   </ion-slides>
 </ion-content>

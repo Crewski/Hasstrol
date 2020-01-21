@@ -13,7 +13,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { Push } from '@ionic-native/push/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx'
-
+import { DragulaModule } from 'ng2-dragula';
 
 @NgModule({
   declarations: [AppComponent,],
@@ -24,6 +24,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx'
     AppRoutingModule,
     IonicStorageModule.forRoot(),
     HttpClientModule,
+    DragulaModule.forRoot(),
   ],
   providers: [
     StatusBar,
