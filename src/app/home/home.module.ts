@@ -5,6 +5,8 @@ import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
+import { RoomComponent } from '../room/room.component';
+
 import { EntityTileComponent } from '../entity-tile/entity-tile.component';
 
 
@@ -21,6 +23,8 @@ import { EntityTileComponent } from '../entity-tile/entity-tile.component';
     ]),    
   ],
   declarations: [HomePage, 
-    EntityTileComponent]
+    EntityTileComponent,
+    RoomComponent
+  ]
 })
 export class HomePageModule {}

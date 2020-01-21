@@ -8,11 +8,17 @@
       </ion-header>
       <ion-content>
         <ion-list>
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-            <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
-              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+          <ion-menu-toggle auto-hide="false" *ngFor="let room of _storage.savedRooms; let i = index">
+            <ion-item [routerLink]="['/home']" (click)='setRoomIndex(i)'>
               <ion-label>
-                {{p.title}}
+                {{room.name}}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item [routerLink]="['/settings']">
+              <ion-label>
+                Settings
               </ion-label>
             </ion-item>
           </ion-menu-toggle>

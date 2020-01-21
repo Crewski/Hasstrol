@@ -25,7 +25,13 @@ export class SettingsPage implements OnInit {
     })
   }
 
+  saveLLT(llt: string){
+    this._storage.setLongLived(llt).then(() => this._ws.initialConnection())
+  }
+
   connect(){
+    this._storage.setToken(null);
+    this._storage.setLongLived(null);
     this._storage.setMainURL(this.mainUrl).then(res => {
       if (res){
         let authUrl = this.mainUrl + "/auth/authorize?client_id=" + this.mainUrl + '/hasstrol&redirect_uri=' + this.mainUrl + '/hasstrol';

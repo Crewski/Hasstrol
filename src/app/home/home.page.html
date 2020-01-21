@@ -1,27 +1,9 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>
-      Home
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content fullscreen class="home-page">
-  <ion-grid class="ion-no-padding">
-    <ion-row >
-      <ion-col size="4" *ngFor="let entity of savedEntities">
-        <entity-tile [entity_id]="entity"></entity-tile>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
-  <ion-button (click)="stream()">Stream</ion-button>
-
-
-
-
-
+<ion-content  class="home-page">
+  <ion-slides class="full" #roomSlides>
+    <ion-slide *ngFor="let room of _storage.savedRooms">
+      <app-room class="full" [roomData]="room"></app-room>
+    </ion-slide>
+  </ion-slides>
 </ion-content>
+

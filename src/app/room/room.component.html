@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar style="text-align: center">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      {{roomData.name}}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button style="visibility: hidden;"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="room-page">
+  <ion-grid class="ion-no-padding">
+    <ion-row >
+      <ion-col size="4" *ngFor="let entity of roomData.entities">
+        <entity-tile [entity_id]="entity"></entity-tile>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

@@ -26,7 +26,7 @@
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^4.7.1",
     "@ionic/storage": "^2.2.0",
-    "cordova-android": "^8.1.0",
+    "cordova-android": "^8.0.0",
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-inappbrowser": "^3.2.0",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
@@ -37,7 +37,7 @@
     "cordova-support-google-services": "^1.3.2",
     "core-js": "^2.5.4",
     "phonegap-plugin-multidex": "^1.0.0",
-    "phonegap-plugin-push": "^2.3.0",
+    "phonegap-plugin-push": "^2.2.0",
     "rxjs": "~6.5.1",
     "rxjs-compat": "^6.5.4",
     "tslib": "^1.9.0",
@@ -88,8 +88,7 @@
       },
       "cordova-plugin-ionic-keyboard": {},
       "phonegap-plugin-push": {
-        "ANDROID_SUPPORT_V13_VERSION": "27.+",
-        "FCM_VERSION": "17.0.+"
+        "FCM_VERSION": "11.6.2"
       }
     },
     "platforms": [

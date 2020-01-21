@@ -5,6 +5,8 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { WebsocketService } from './services/websocket.service';
 import { NotificationService } from './services/notification.service';
+import { StorageService } from './services/storage.service';
+import { RoomsService } from './services/rooms.service';
 
 @Component({
   selector: 'app-root',
@@ -35,7 +37,9 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private _ws: WebsocketService,
-    private _notification: NotificationService
+    private _notification: NotificationService,
+    public _storage: StorageService,
+    private _roomsService: RoomsService
   ) {
     this.initializeApp();
   }
@@ -47,5 +51,9 @@ export class AppComponent {
       this._ws.initialConnection();
       this._notification.initNotifications();
     });
+  }
+
+  setRoomIndex(index: number){
+    this._roomsService.setRoomIndex(index);
   }
 }

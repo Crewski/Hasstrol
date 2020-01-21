@@ -2,7 +2,7 @@
 <widget id="com.crewski.hasstrol" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Hasstrol</name>
     <description>An app for controlling Home Assistant.</description>
-    <author email="davidnaylor04@gmail.com" href="http://ionicframework.com/">Ionic Framework Team</author>
+    <author email="davidnaylor04@gmail.com" href="http://ionicframework.com/">David Naylor</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

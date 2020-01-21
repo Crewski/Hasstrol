@@ -12,16 +12,8 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
   },
   {
-    path: 'list',
-    loadChildren: () => import('./list/list.module').then(m => m.ListPageModule)
-  },
-  {
     path: 'settings',
     loadChildren: () => import('./settings/settings.module').then(m => m.SettingsPageModule)
-  },
-  {
-    path: 'room',
-    loadChildren: () => import('./room/room.module').then( m => m.RoomPageModule)
   }
 ];
 

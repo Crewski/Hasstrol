@@ -16,14 +16,14 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx'
 
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent,],
   entryComponents: [],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     IonicStorageModule.forRoot(),
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
     StatusBar,
