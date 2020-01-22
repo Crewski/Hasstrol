@@ -4,10 +4,13 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      {{roomData.name}}
+      {{ roomData.name }} 
+        <ion-icon *ngIf="isEditing" (click)="changeName()" name="create"></ion-icon>
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button icon-only (click)="toggleEditing()"><ion-icon name="create"></ion-icon></ion-button>
+      <ion-button [style.visibility]="isEditing? 'visible' : 'hidden'" icon-only (click)="stopEditing()">
+        <ion-icon name="save"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -17,31 +20,35 @@
 
 <ion-content class="room-page" forceOverscroll="false">
 
-<ion-button *ngIf="isEditing" (click)="openEntitySelectable()">Add Entity</ion-button>
+  <div *ngIf="isEditing">
+    <div>
+      <ion-button (click)="openEntitySelectable()">Add Entity</ion-button>
+    </div>
+    <div>
+      <ion-button icon-only *ngIf="index != 0" (click)="shiftRoom(false)"><ion-icon name="arrow-round-back"></ion-icon></ion-button>
+      <ion-button (click)="newRoom()">New Room</ion-button>
+      <ion-button color="danger" (click)="removeRoom()">Remove Room</ion-button>
+      <ion-button icon-only *ngIf="index != maxIndex" (click)="shiftRoom(true)"><ion-icon name="arrow-round-forward"></ion-icon></ion-button>
+    </div>
+  </div>
 
-  <ion-grid class="ion-no-padding">
-    <ion-row dragula="bag" [(dragulaModel)]="_storage.savedRooms[index].entities">
-      <!-- <ion-col size="4" *ngFor="let entity of roomData.entities"> -->
-      <ion-col size="4" *ngFor="let entity of _storage.savedRooms[index].entities; let i = index">
-        <entity-tile [entity_id]="entity" [roomIndex]="index" [entityIndex]="i"></entity-tile>
+  <ion-grid class="ion-no-padding hasstrol-grid">
+    <ion-row dragula="bag" [(dragulaModel)]=" roomData.entities">
+      <ion-col *ngFor="let entity of roomData.entities; let i = index" [size]="entity.split('.')[0] == 'camera' ? '3' : '1'" [ngSwitch]="entity.split('.')[0]" >
+        <app-camera-tile *ngSwitchCase="'camera'" [entity_id]="entity"></app-camera-tile>
+        <entity-tile *ngSwitchDefault [entity_id]="entity" [roomIndex]="index" [entityIndex]="i"></entity-tile>
       </ion-col>
     </ion-row>
   </ion-grid>
 
   <ion-item style="visibility: hidden;">
     <ion-label>Select Entity</ion-label>
-    <ionic-selectable #entitySelectable
-      
-      [items]="entityList"
-      itemValueField="entity_id"
-      itemTextField="entity_id"
-      [canSearch]="true"
-      (onChange)="newEntitySelected($event)">
+    <ionic-selectable #entitySelectable [items]="entityList" itemValueField="entity_id" itemTextField="entity_id"
+      [canSearch]="true" (onChange)="newEntitySelected($event)">
 
-      <ng-template ionicSelectableItemTemplate let-entity="item"
-      let-isPortSelected="isItemSelected">
-      {{entity.entity_id}} ({{entity.attributes.friendly_name}})
-    </ng-template>
+      <ng-template ionicSelectableItemTemplate let-entity="item" let-isPortSelected="isItemSelected">
+        {{entity.entity_id}} ({{entity.attributes.friendly_name}})
+      </ng-template>
 
     </ionic-selectable>
   </ion-item>

@@ -3,6 +3,7 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { EntityData } from '../models/entity_data';
 import { StorageService } from './storage.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 
@@ -19,7 +20,8 @@ export class WebsocketService {
   allEntities: EntityData[] = [];
   private entityObservalbe: BehaviorSubject<EntityData[]>;
 
-  constructor(private _storage: StorageService) {
+  constructor(private _storage: StorageService,
+    private _sanitizer: DomSanitizer) {
     this.isConnected = new BehaviorSubject<boolean>(false);
     this.entityObservalbe = new BehaviorSubject<EntityData[]>([]);
 
@@ -33,42 +35,49 @@ export class WebsocketService {
 
   public initialConnection() {
     this._storage.getMainURL().then(url => {
-      this.myWebSocket = webSocket(url.replace('http', 'ws') + '/api/websocket');
-      this.myWebSocket.subscribe(message => {
-        // this.handleMessage(message);
-        switch (message.type) {
-          case "auth_required":
-            this._storage.getLongLived().then(longlived => {
-              if (longlived) {
-                console.log("Auth with Long Lived");
-                var msg = { type: "auth", access_token: longlived };
-                this.myWebSocket.next(msg);
-              } else {
-                this._storage.getToken().then(token => {
-                  console.log("Auth with token");
-                  var msg = { type: "auth", access_token: token };
-                  this.myWebSocket.next(msg);
+      if (url) {
+        try {
+          this.myWebSocket = webSocket(url.replace('http', 'ws') + '/api/websocket');
+          this.myWebSocket.subscribe(message => {
+            // this.handleMessage(message);
+            switch (message.type) {
+              case "auth_required":
+                this._storage.getLongLived().then(longlived => {
+                  if (longlived) {
+                    console.log("Auth with Long Lived");
+                    var msg = { type: "auth", access_token: longlived };
+                    this.myWebSocket.next(msg);
+                  } else {
+                    this._storage.getToken().then(token => {
+                      console.log("Auth with token");
+                      var msg = { type: "auth", access_token: token };
+                      this.myWebSocket.next(msg);
+                    })
+                  }
                 })
-              }
-            })
-            break;
-          case "auth_ok":
-            this.isConnected.next(true);
-            this._storage.getLongLived().then(longlived => {
-              if (!longlived) {
-                this.receiveLongLivedToken().then(data => {
-                  console.log(data);
+                break;
+              case "auth_ok":
+                this.isConnected.next(true);
+                this._storage.getLongLived().then(longlived => {
+                  if (!longlived) {
+                    this.receiveLongLivedToken().then(data => {
+                      console.log(data);
+                    })
+                  }
                 })
-              }
-            })
-            break;
-          case "auth_invalid":
-            console.log(message);
-            this._storage.setLongLived(null);
-            this._storage.setToken(null);
-            break;
+                break;
+              case "auth_invalid":
+                console.log(message);
+                this._storage.setLongLived(null);
+                this._storage.setToken(null);
+                break;
+            }
+          })
+        } catch (err) {
+          console.log(err);
         }
-      })
+      }
+
     })
   }
 
@@ -76,10 +85,10 @@ export class WebsocketService {
     let id = this.messageID;
     this.messageID++;
     let msg = { id: id, type: "auth/long_lived_access_token", client_name: 'Hasstrol_' + Math.floor(Math.random() * 99999 + 1), client_icon: '', lifespan: 365 };
-    this.myWebSocket.next(msg);    
+    this.myWebSocket.next(msg);
     return new Promise((resolve) => {
       this.myWebSocket.subscribe(data => {
-        if (data.id == id) {          
+        if (data.id == id) {
           this._storage.setLongLived(data.result);
           resolve(true);
         }
@@ -149,7 +158,7 @@ export class WebsocketService {
     this.messageID++;
     let msg = { id: id, type: 'call_service', domain: domain, service: service, service_data: { entity_id: entity_id } };
     this.myWebSocket.next(msg);
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.myWebSocket.subscribe(data => {
         if (data.id == id) {
           resolve(data);
@@ -158,23 +167,45 @@ export class WebsocketService {
     })
   }
 
-  getThumbnail(type: string, entity_id: string) {
-    if (type === 'camera' || type === 'media_player') {
-      let msg = { type: type + '_thumbnail', entity_id: entity_id };
-      this.sendMessage(msg);
-    }
+  getThumbnail(entity_id: string): Promise<any> {
+    return new Promise((resolve) => {
+
+      this.connectionStatus().subscribe(value => {
+        if (value) {
+          let domain = entity_id.split('.')[0];
+          let id = this.messageID;
+          this.messageID++;
+          let msg = { id: id, type: domain + '_thumbnail', entity_id: entity_id };
+          this.myWebSocket.next(msg);
+          this.myWebSocket.subscribe(data => {
+            if (data.id == id) {
+              resolve(data);
+            }
+          })
+        }
+      })
+    })
   }
 
-  getCameraStream(entity_id: string) {
-    let msg = { type: "camera/stream", entity_id: entity_id };
-    this.sendMessage(msg);
+  getCameraStream(entity_id: string): Promise<any> {
+    return new Promise((resolve) => {
+      let id = this.messageID;
+      this.messageID++;
+      let msg = { id: id, type: "camera/stream", entity_id: entity_id };
+      this.myWebSocket.next(msg);
+      this.myWebSocket.subscribe(data => {
+        if (data.id == id) {
+          resolve(data);
+        }
+      })
+    })
   }
 
   connectionStatus(): Observable<boolean> {
     return this.isConnected.asObservable();
   }
 
-  getEntityList(){
+  getEntityList() {
     return this.allEntities;
   }
 

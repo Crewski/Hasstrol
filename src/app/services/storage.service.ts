@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { RoomsService } from './rooms.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +13,19 @@ export class StorageService {
   LONG_LIVED = "longlived";
   SAVED_ROOMS = "savedrooms";
 
-  
+
   private isEditing: BehaviorSubject<boolean>;
 
-  public savedRooms = [];
+  public roomData: BehaviorSubject<any> = new BehaviorSubject<any>([{ name: 'Default Room', entities: [] }]);
+  public savedRooms = this.roomData.asObservable();
 
-  constructor(private _storage: Storage) {
-    this._storage.get(this.SAVED_ROOMS).then(rooms => this.savedRooms = rooms);
+  constructor(private _storage: Storage, private _rs: RoomsService) {
+    this._storage.get(this.SAVED_ROOMS).then(rooms => {
+      console.log(rooms);
+      if (rooms) {
+        this.roomData.next(rooms);
+      }
+    });
     this.isEditing = new BehaviorSubject<boolean>(false);
   }
 
@@ -26,16 +33,44 @@ export class StorageService {
     return this.isEditing.asObservable();
   }
 
-  setEditing(){
-    this.isEditing.next(!this.isEditing.value);
+  setEditing(editing: boolean) {
+    this.isEditing.next(editing);
   }
 
+  addRoom() {
+    let rooms = this.roomData.value;
+    rooms.push({ name: 'New Room', entities: [] });
+    this._storage.set(this.SAVED_ROOMS, rooms).then(() => {
+      this.roomData.next(rooms);
+      this._rs.setRoomIndex(rooms.length + 1);
+    })
+  }
 
+  removeRoom(index: number){
+    let rooms = this.roomData.value;
+    rooms.splice(index, 1);    
+    this._storage.set(this.SAVED_ROOMS, rooms).then(() => {
+      this.roomData.next(rooms);
+    })
+  }
 
-  setSavedRoom(index, roomData){
-    
-    this.savedRooms[index] = roomData;
-    this._storage.set(this.SAVED_ROOMS, this.savedRooms)
+  shiftRoom(index: number, toRight: boolean){    
+    let rooms = this.roomData.value;
+    let new_index = toRight ? index + 1 : index - 1
+    let cutOut = rooms.splice(index, 1) [0];
+    rooms.splice(new_index, 0, cutOut);       
+    this._storage.set(this.SAVED_ROOMS, rooms).then(() => {
+      this.roomData.next(rooms);
+      this._rs.setRoomIndex(new_index + 1);
+    })
+  }
+
+  setSavedRoom(index: number, roomData: any) {
+    let rooms = this.roomData.value;
+    rooms[index] = roomData;
+    this._storage.set(this.SAVED_ROOMS, rooms).then(() => {
+      this.roomData.next(rooms);
+    })
   }
 
   setMainURL(mainurl: string): Promise<boolean> {
@@ -98,10 +133,11 @@ export class StorageService {
     })
   }
 
-  public deleteEntity(roomIndex: number, entityIndex: number){
-    console.log("Deleting - " + this.savedRooms[roomIndex].entities[entityIndex])
-    this.savedRooms[roomIndex].entities.splice(entityIndex, 1);
-    
-    this._storage.set(this.SAVED_ROOMS, this.savedRooms)
+  public deleteEntity(roomIndex: number, entityIndex: number) {
+    let rooms = this.roomData.value;
+    rooms[roomIndex].entities.splice(entityIndex, 1);
+    this._storage.set(this.SAVED_ROOMS, rooms).then(() => {      
+      this.roomData.next(rooms);
+    })
   }
 }

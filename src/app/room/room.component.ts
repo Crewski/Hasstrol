@@ -1,37 +1,85 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, OnChanges } from '@angular/core';
 import { DragulaService } from 'ng2-dragula';
 import { StorageService } from '../services/storage.service';
 import { WebsocketService } from '../services/websocket.service';
 import { IonicSelectableComponent } from 'ionic-selectable';
 import { EntityData } from '../models/entity_data';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.scss'],
 })
-export class RoomComponent implements OnInit {
+export class RoomComponent implements OnChanges {
 
   @ViewChild('entitySelectable', {static: false}) entitySelectable: IonicSelectableComponent;
 
-  @Input() roomData: any;
+  // @Input() roomData: any;
   @Input() index: number;
+  @Input() maxIndex: number;
+
 
   public entityList: EntityData[] = [];
   isEditing: boolean = false;
-  
+  roomData: any = {name: "", entities: []};
 
-  constructor(private _dragula: DragulaService, private _storage: StorageService, public _ws: WebsocketService) {
+  constructor(private _dragula: DragulaService, 
+              private _storage: StorageService, 
+              public _ws: WebsocketService,
+              private _alertCtrl: AlertController) {
+
     this._dragula.drop('bag')
     .subscribe(() => {
+      
       this._storage.setSavedRoom(this.index, this.roomData);
       console.log(this.roomData)
     });
-    this._storage.editingStatus().subscribe(res => this.isEditing = res);
-    
+    this._storage.editingStatus().subscribe(res => this.isEditing = res);    
    }
 
-  ngOnInit() {}
+  ngOnChanges () {
+    this._storage.savedRooms.subscribe(rooms => {
+      this.roomData = rooms[this.index];      
+    });
+  }
+
+  async changeName(){
+    const alert = await this._alertCtrl.create({
+      header: 'Room name',
+      inputs: [
+        { name: 'name', type: 'text', value: this.roomData.name}
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {}
+        },
+        {
+          text: 'Save',
+          handler: (data => {
+            this.roomData.name = data.name;
+            this._storage.setSavedRoom(this.index, this.roomData);
+          })
+        }
+      ]
+    })
+    await alert.present();
+    
+  }
+
+  shiftRoom(toRight: boolean){
+    this._storage.shiftRoom(this.index, toRight)
+  }
+
+  newRoom(){
+    this._storage.addRoom();
+  }
+
+  removeRoom(){
+    this._storage.removeRoom(this.index);
+  }
 
   newEntitySelected(event: any){
     console.log(event);
@@ -44,8 +92,8 @@ export class RoomComponent implements OnInit {
     this.entitySelectable.open();
   }
 
-  toggleEditing(){
-    this._storage.setEditing();
+  stopEditing(){
+    this._storage.setEditing(false);
   }
 
 }

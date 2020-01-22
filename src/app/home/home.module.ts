@@ -10,6 +10,8 @@ import { RoomComponent } from '../room/room.component';
 import { EntityTileComponent } from '../entity-tile/entity-tile.component';
 import { DragulaModule } from 'ng2-dragula';
 import { IonicSelectableModule } from 'ionic-selectable';
+import { CameraTileComponent } from '../tiles/camera-tile/camera-tile.component';
+import { CameraModalComponent } from '../modals/camera-modal/camera-modal.component';
 
 
 @NgModule({
@@ -28,7 +30,10 @@ import { IonicSelectableModule } from 'ionic-selectable';
   ],
   declarations: [HomePage, 
     EntityTileComponent,
-    RoomComponent
-  ]
+    CameraTileComponent,
+    RoomComponent,
+    CameraModalComponent
+  ],
+  entryComponents: [CameraModalComponent]
 })
 export class HomePageModule {}

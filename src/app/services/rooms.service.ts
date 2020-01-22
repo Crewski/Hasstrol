@@ -17,7 +17,6 @@ export class RoomsService {
    }
 
    setRoomIndex(index: number){
-     console.log("Room Index = " + index);
-     this.roomIndex.next(index + 1);
+     this.roomIndex.next(index);
    }
 }

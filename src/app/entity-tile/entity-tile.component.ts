@@ -18,13 +18,14 @@ export class EntityTileComponent implements OnInit {
   active: boolean = false;
   iconColor = 'rgb(255,255,255)';
   isEditing: boolean = false;
+  domain: string;
 
   constructor(private _ws: WebsocketService, private _cd: ChangeDetectorRef, private _storage: StorageService) {
     this._storage.editingStatus().subscribe(res => this.isEditing = res);
   }
 
   ngOnInit() {
-    console.log(this.entity_id);
+    this.domain = this.entity_id.split(".")[0];
     this._ws.getEntityData().subscribe(data => {
       if (data.findIndex(data => data.entity_id == this.entity_id) != -1) {
         this.entity = data.find(data => data.entity_id == this.entity_id);
@@ -50,18 +51,32 @@ export class EntityTileComponent implements OnInit {
   }
 
   setIconDefault() {
-    let domain = this.entity_id.split(".")[0];
-    switch (domain) {
-      case "light":
-        this.entity.attributes['icon'] = "mdi:lightbulb";
-        break;
+    if (this.entity.attributes['device_class']) {
+      switch (this.entity.attributes['device_class']) {
+        case "temperature":
+          this.entity.attributes['icon'] = "mdi:thermometer";
+          break;
+        case "humidity":
+          this.entity.attributes['icon'] = "mdi:water-percent";
+          break;
+      }
+    } else {
+      switch (this.domain) {
+        case "light":
+          this.entity.attributes['icon'] = "mdi:lightbulb";
+          break;
+        case "sensor":
+          this.entity.attributes['icon'] = "mdi:eye";
+          break;
+          case "switch":
+            this.entity.attributes['icon'] = "mdi:flash";
+            break;
+      }
     }
   }
 
   setActive() {
-
-    let domain = this.entity_id.split(".")[0];
-    switch (domain) {
+    switch (this.domain) {
       case "light":
         if (this.entity.state == 'on') {
           this.active = true;
@@ -72,13 +87,23 @@ export class EntityTileComponent implements OnInit {
           }
         } else {
           this.active = false;
-          this.iconColor = 'rgb(255,255,255)';
+          this.iconColor = 'rgb(0,0,0)';
+        }
+        break;
+      case "sensor":
+        this.active = true;
+        this.iconColor = 'rgb(255,165,0)';
+        break;
+      case "climate":
+        if (this.entity.state != 'off'){
+          this.active = true;
+        } else {
+          this.active = false;
         }
     }
   }
 
-  deleteEntity(){
-    console.log("Delete Entity");
+  deleteEntity() {
     this._storage.deleteEntity(this.roomIndex, this.entityIndex)
   }
 

@@ -55,5 +55,6 @@ export class AppComponent {
 
   setRoomIndex(index: number){
     this._roomsService.setRoomIndex(index);
+    this._storage.setEditing
   }
 }

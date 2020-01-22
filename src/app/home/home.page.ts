@@ -20,10 +20,8 @@ export class HomePage {
     public _storage: StorageService,
     private _roomsService: RoomsService) {
     this._roomsService.getRoomIndex().subscribe(index => {
-      if (index) {
-        
-     console.log("Room Index = " + index);
-        this.gotoSlide(index - 1);
+      if (index != null) {
+        this.gotoSlide(index);
       }
 
     })

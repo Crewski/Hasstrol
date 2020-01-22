@@ -56,3 +56,11 @@
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
     filter: alpha(opacity=20);
   }
+
+  .menu-indented > ion-item {
+    margin: 0px 0px 0px 10px;
+  }
+
+  .camera-img {    
+    border-radius: 25px;
+  }
