@@ -1,3 +1,23 @@
-<p>
-  camera-modal works!
-</p>
+<ion-header>
+  <ion-toolbar style="text-align: center">
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()" icon-only>
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      Camera Stream 
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button [style.visibility]="'hidden'" icon-only>
+        <ion-icon name="save"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<vg-player *ngIf="stream">
+  <video [vgMedia]="media" #media id="singleVideo" preload="auto" controls autoplay="true">
+    <source [src]="stream" type="video/mp4">
+  </video>
+</vg-player>

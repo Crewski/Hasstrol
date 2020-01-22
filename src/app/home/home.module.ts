@@ -13,6 +13,11 @@ import { IonicSelectableModule } from 'ionic-selectable';
 import { CameraTileComponent } from '../tiles/camera-tile/camera-tile.component';
 import { CameraModalComponent } from '../modals/camera-modal/camera-modal.component';
 
+import { VgCoreModule } from '../../../node_modules/videogular2/compiled/core';
+import { VgControlsModule } from '../../../node_modules/videogular2/compiled/controls';
+import { VgOverlayPlayModule } from '../../../node_modules/videogular2/compiled/overlay-play';
+import { VgBufferingModule } from '../../../node_modules/videogular2/compiled/buffering';
+
 
 @NgModule({
   imports: [
@@ -26,7 +31,11 @@ import { CameraModalComponent } from '../modals/camera-modal/camera-modal.compon
       }
     ]), 
     DragulaModule,
-    IonicSelectableModule  
+    IonicSelectableModule,
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule
   ],
   declarations: [HomePage, 
     EntityTileComponent,
