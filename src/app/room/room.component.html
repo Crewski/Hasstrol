@@ -7,18 +7,43 @@
       {{roomData.name}}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-menu-button style="visibility: hidden;"></ion-menu-button>
+      <ion-button icon-only (click)="toggleEditing()"><ion-icon name="create"></ion-icon></ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="room-page">
+
+
+
+<ion-content class="room-page" forceOverscroll="false">
+
+<ion-button *ngIf="isEditing" (click)="openEntitySelectable()">Add Entity</ion-button>
+
   <ion-grid class="ion-no-padding">
-    <ion-row dragula="bag" [(dragulaModel)]="roomData.entities">
-      <ion-col size="4" *ngFor="let entity of roomData.entities">
-        <entity-tile [entity_id]="entity"></entity-tile>
+    <ion-row dragula="bag" [(dragulaModel)]="_storage.savedRooms[index].entities">
+      <!-- <ion-col size="4" *ngFor="let entity of roomData.entities"> -->
+      <ion-col size="4" *ngFor="let entity of _storage.savedRooms[index].entities; let i = index">
+        <entity-tile [entity_id]="entity" [roomIndex]="index" [entityIndex]="i"></entity-tile>
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <ion-item style="visibility: hidden;">
+    <ion-label>Select Entity</ion-label>
+    <ionic-selectable #entitySelectable
+      
+      [items]="entityList"
+      itemValueField="entity_id"
+      itemTextField="entity_id"
+      [canSearch]="true"
+      (onChange)="newEntitySelected($event)">
+
+      <ng-template ionicSelectableItemTemplate let-entity="item"
+      let-isPortSelected="isItemSelected">
+      {{entity.entity_id}} ({{entity.attributes.friendly_name}})
+    </ng-template>
+
+    </ionic-selectable>
+  </ion-item>
 
 </ion-content>

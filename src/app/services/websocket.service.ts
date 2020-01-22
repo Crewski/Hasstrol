@@ -174,6 +174,10 @@ export class WebsocketService {
     return this.isConnected.asObservable();
   }
 
+  getEntityList(){
+    return this.allEntities;
+  }
+
 
 
 

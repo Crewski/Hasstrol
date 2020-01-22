@@ -9,6 +9,7 @@ import { RoomComponent } from '../room/room.component';
 
 import { EntityTileComponent } from '../entity-tile/entity-tile.component';
 import { DragulaModule } from 'ng2-dragula';
+import { IonicSelectableModule } from 'ionic-selectable';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { DragulaModule } from 'ng2-dragula';
         component: HomePage
       }
     ]), 
-    DragulaModule   
+    DragulaModule,
+    IonicSelectableModule  
   ],
   declarations: [HomePage, 
     EntityTileComponent,

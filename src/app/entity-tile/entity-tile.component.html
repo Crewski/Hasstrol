@@ -1,6 +1,10 @@
 
     <div class="box">
-        <ion-spinner *ngIf="calling"></ion-spinner>
+        <ion-fab vertical="top" horizontal="end" slot="fixed" *ngIf="isEditing">
+            <ion-fab-button size="small" color="danger" (click)="deleteEntity()">
+              <ion-icon size="small" name="close"></ion-icon>
+            </ion-fab-button>
+          </ion-fab>
         <div class="content" (click)="onPress()" *ngIf="entity?.attributes" [ngClass]="active ? 'background-on' : 'background-off' ">            
             <div>
                 <div class="icon-space" [ngClass]="active ? 'icon-on' : null"  [style.color]='iconColor'><span class="iconify" [attr.data-icon]='entity.attributes.icon' data-height="100%"></span></div>

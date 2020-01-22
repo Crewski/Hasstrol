@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { WebsocketService } from '../services/websocket.service';
 import { EntityData } from '../models/entity_data';
+import { StorageService } from '../services/storage.service';
 
 @Component({
   selector: 'entity-tile',
@@ -10,12 +11,16 @@ import { EntityData } from '../models/entity_data';
 export class EntityTileComponent implements OnInit {
 
   @Input() entity_id: string;
+  @Input() roomIndex: number;
+  @Input() entityIndex: number;
+
   entity: EntityData;
   active: boolean = false;
-  calling: boolean = false;
-  iconColor = 'rgb(255,255,255)'
+  iconColor = 'rgb(255,255,255)';
+  isEditing: boolean = false;
 
-  constructor(private _ws: WebsocketService, private _cd: ChangeDetectorRef) {
+  constructor(private _ws: WebsocketService, private _cd: ChangeDetectorRef, private _storage: StorageService) {
+    this._storage.editingStatus().subscribe(res => this.isEditing = res);
   }
 
   ngOnInit() {
@@ -33,13 +38,11 @@ export class EntityTileComponent implements OnInit {
   }
 
   onPress() {
-    this.calling = true;
     let domain = this.entity_id.split(".")[0];
     switch (domain) {
       case "light":
         this._ws.callService("light", "toggle", this.entity_id).then(data => {
           if (data.success) {
-            this.calling = false;
           }
         })
         break;
@@ -72,6 +75,11 @@ export class EntityTileComponent implements OnInit {
           this.iconColor = 'rgb(255,255,255)';
         }
     }
+  }
+
+  deleteEntity(){
+    console.log("Delete Entity");
+    this._storage.deleteEntity(this.roomIndex, this.entityIndex)
   }
 
 }

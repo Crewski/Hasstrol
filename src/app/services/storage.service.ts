@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,21 +12,25 @@ export class StorageService {
   LONG_LIVED = "longlived";
   SAVED_ROOMS = "savedrooms";
 
-  // public savedRooms = [
-  //   { name: "1st Floor", entities: ["light.front_door", "light.back_door", "light.kitchen_table", "light.kitchen_island", "light.under_cabinet"] },
-  //   { name: "Another Room", entities: ["light.garage_entrance", "sensor.washing_machine_current"] },
-  //   { name: "Third Room", entities: ["light.porch_light", "sensor.washing_machine_current"] }
-  // ]
+  
+  private isEditing: BehaviorSubject<boolean>;
 
   public savedRooms = [];
 
   constructor(private _storage: Storage) {
-    this._storage.get(this.SAVED_ROOMS).then(rooms => this.savedRooms = rooms)
+    this._storage.get(this.SAVED_ROOMS).then(rooms => this.savedRooms = rooms);
+    this.isEditing = new BehaviorSubject<boolean>(false);
   }
 
-  getSavedRoom(){
-    
+  editingStatus(): Observable<boolean> {
+    return this.isEditing.asObservable();
   }
+
+  setEditing(){
+    this.isEditing.next(!this.isEditing.value);
+  }
+
+
 
   setSavedRoom(index, roomData){
     
@@ -91,5 +96,12 @@ export class StorageService {
         reject(err);
       })
     })
+  }
+
+  public deleteEntity(roomIndex: number, entityIndex: number){
+    console.log("Deleting - " + this.savedRooms[roomIndex].entities[entityIndex])
+    this.savedRooms[roomIndex].entities.splice(entityIndex, 1);
+    
+    this._storage.set(this.SAVED_ROOMS, this.savedRooms)
   }
 }

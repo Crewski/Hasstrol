@@ -14,6 +14,7 @@ import { Push } from '@ionic-native/push/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx'
 import { DragulaModule } from 'ng2-dragula';
+import { IonicSelectableModule } from 'ionic-selectable';
 
 @NgModule({
   declarations: [AppComponent,],
@@ -25,6 +26,7 @@ import { DragulaModule } from 'ng2-dragula';
     IonicStorageModule.forRoot(),
     HttpClientModule,
     DragulaModule.forRoot(),
+    IonicSelectableModule,
   ],
   providers: [
     StatusBar,
