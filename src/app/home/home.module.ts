@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 import { HomePage } from './home.page';
 import { RoomComponent } from '../room/room.component';
 
-import { EntityTileComponent } from '../entity-tile/entity-tile.component';
+import { EntityTileComponent } from '../tiles/entity-tile/entity-tile.component';
 import { DragulaModule } from 'ng2-dragula';
 import { IonicSelectableModule } from 'ionic-selectable';
 import { CameraTileComponent } from '../tiles/camera-tile/camera-tile.component';
@@ -18,9 +18,9 @@ import { VgControlsModule } from '../../../node_modules/videogular2/compiled/con
 import { VgOverlayPlayModule } from '../../../node_modules/videogular2/compiled/overlay-play';
 import { VgBufferingModule } from '../../../node_modules/videogular2/compiled/buffering';
 import { LightTileComponent } from '../tiles/light-tile/light-tile.component';
-import { SensorTileComponent } from '../tiles/sensor-tile/sensor-tile.component';
 import { CoverTileComponent } from '../tiles/cover-tile/cover-tile.component';
 import { ClimateTileComponent } from '../tiles/climate-tile/climate-tile.component';
+import { SpacedTextPipe } from '../pipes/spaced-text.pipe';
 
 
 @NgModule({
@@ -39,7 +39,7 @@ import { ClimateTileComponent } from '../tiles/climate-tile/climate-tile.compone
     VgCoreModule,
     VgControlsModule,
     VgOverlayPlayModule,
-    VgBufferingModule
+    VgBufferingModule,
   ],
   declarations: [HomePage, 
     EntityTileComponent,
@@ -47,13 +47,13 @@ import { ClimateTileComponent } from '../tiles/climate-tile/climate-tile.compone
     RoomComponent,
     CameraModalComponent,
     LightTileComponent,
-    SensorTileComponent,
     CoverTileComponent,
-    ClimateTileComponent
+    ClimateTileComponent,
+    SpacedTextPipe
+
   ],
   entryComponents: [CameraModalComponent,
     LightTileComponent, 
-    SensorTileComponent, 
     CoverTileComponent,
     ClimateTileComponent
   ]

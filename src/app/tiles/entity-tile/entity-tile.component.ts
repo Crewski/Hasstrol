@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
-import { WebsocketService } from '../services/websocket.service';
-import { EntityData } from '../models/entity_data';
-import { StorageService } from '../services/storage.service';
+import { WebsocketService } from '../../services/websocket.service';
+import { EntityData } from '../../models/entity_data';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'entity-tile',
@@ -17,11 +17,10 @@ export class EntityTileComponent implements OnInit {
   entity: EntityData;
   active: boolean = false;
   iconColor = 'rgb(255,255,255)';
-  isEditing: boolean = false;
   domain: string;
 
   constructor(private _ws: WebsocketService, private _cd: ChangeDetectorRef, private _storage: StorageService) {
-    this._storage.editingStatus().subscribe(res => this.isEditing = res);
+
   }
 
   ngOnInit() {
@@ -39,10 +38,14 @@ export class EntityTileComponent implements OnInit {
   }
 
   onPress() {
-    let domain = this.entity_id.split(".")[0];
-    switch (domain) {
-      case "light":
-        this._ws.callService("light", "toggle", this.entity_id).then(data => {
+    switch (this.domain) {
+      case "person":
+      case "device_tracker":
+        console.log(this.entity);
+        break;
+
+      default:
+        this._ws.callService(this.domain, "toggle", this.entity_id).then(data => {
           if (data.success) {
           }
         })
@@ -59,6 +62,10 @@ export class EntityTileComponent implements OnInit {
         case "humidity":
           this.entity.attributes['icon'] = "mdi:water-percent";
           break;
+        case "door":
+          this.entity.attributes['icon'] = "mdi:door";
+          break;
+
       }
     } else {
       switch (this.domain) {
@@ -68,9 +75,16 @@ export class EntityTileComponent implements OnInit {
         case "sensor":
           this.entity.attributes['icon'] = "mdi:eye";
           break;
-          case "switch":
-            this.entity.attributes['icon'] = "mdi:flash";
+        case "switch":
+          this.entity.attributes['icon'] = "mdi:flash";
+          break;
+          case "binary_sensor":
+            this.entity.attributes['icon'] = "mdi:circle-outline";
             break;
+        case "person":
+        case "device_tracker":          
+          this.entity.attributes['icon'] = "mdi:account";
+          break;
       }
     }
   }
@@ -78,6 +92,10 @@ export class EntityTileComponent implements OnInit {
   setActive() {
     switch (this.domain) {
       case "light":
+      case "switch":
+      case "binary_sensor":
+      case "input_boolean":
+      case "binary_sensor":
         if (this.entity.state == 'on') {
           this.active = true;
           if (this.entity.attributes['rgb_color']) {
@@ -94,11 +112,14 @@ export class EntityTileComponent implements OnInit {
         this.active = true;
         this.iconColor = 'rgb(255,165,0)';
         break;
-      case "climate":
-        if (this.entity.state != 'off'){
-          this.active = true;
-        } else {
+      case "device_tracker":
+      case "person":
+        if (this.entity.state == 'home'){          
+        this.active = true;
+        this.iconColor = 'rgb(255,165,0)';
+        } else {          
           this.active = false;
+          this.iconColor = 'rgb(0,0,0)';
         }
     }
   }

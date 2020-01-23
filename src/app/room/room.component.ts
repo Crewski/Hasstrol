@@ -89,9 +89,44 @@ export class RoomComponent implements OnChanges {
 
   openEntitySelectable(){
     this.entityList = [...this._ws.allEntities];
+    this.entitySelectable.clear();
     this.entitySelectable.open();
   }
 
+  filterEntities(text: string) {
+    
+    return this.entityList.filter(entity => {
+      try{
+
+      return entity.entity_id.toLowerCase().indexOf(text) !== -1 ||
+      entity.attributes['friendly_name'].toLowerCase().indexOf(text) !== -1
+      } catch (err) {
+        return entity.entity_id.toLowerCase().indexOf(text) !== -1
+      }
+    });
+  }
+
+  searchEntities(event: {
+    component: IonicSelectableComponent,
+    text: string
+  }) {
+    let text = event.text.trim().toLowerCase();
+    event.component.startSearch();
+
+    
+
+    if (!text) {
+      event.component.items = [];
+      event.component.endSearch();
+      return;
+    }
+
+    
+      event.component.items = this.filterEntities(text);
+      event.component.endSearch();
+    
+  }
+  
   stopEditing(){
     this._storage.setEditing(false);
   }
