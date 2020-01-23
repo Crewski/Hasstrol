@@ -42,11 +42,13 @@
 
   .name-space {
     height: 30%; 
-    display: flex!important;
+    display: block!important;
     align-content: center!important;
     align-items: center!important;
     justify-content: center;
     white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis; 
   }
 
   .state-space {
@@ -68,6 +70,14 @@
 
   .icon-on {
     opacity: 1;
+  }
+
+  .friendly-name{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* number of lines to show */
   }
 
   .numberCircle {

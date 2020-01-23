@@ -9,7 +9,7 @@
             <div>
                 <div *ngIf="domain != 'climate'" class="icon-space" [ngClass]="active ? 'icon-on' : null"  [style.color]='iconColor'><span class="iconify" [attr.data-icon]='entity.attributes.icon' data-height="100%"></span></div>
                 <div *ngIf="domain == 'climate'" class="icon-space numberCircle">{{entity.attributes?.current_temperature}}</div>
-                <div class="name-space">{{entity.attributes.friendly_name}}</div>
+                <div class="name-space"><div class="friendly-name" >{{entity.attributes.friendly_name}}</div></div>
                 <div class="state-space">{{entity.state | titlecase}} {{ entity.attributes?.unit_of_measurement }}</div>
             </div>
         </div>

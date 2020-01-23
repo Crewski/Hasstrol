@@ -3,6 +3,7 @@ import { WebsocketService } from 'src/app/services/websocket.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ModalController } from '@ionic/angular';
 import { CameraModalComponent } from 'src/app/modals/camera-modal/camera-modal.component';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-camera-tile',
@@ -12,11 +13,15 @@ import { CameraModalComponent } from 'src/app/modals/camera-modal/camera-modal.c
 export class CameraTileComponent implements OnChanges, OnDestroy {
 
   @Input() entity_id: string;
+  @Input() roomIndex: number;
+  @Input() entityIndex: number;
+
   cameraimg: SafeResourceUrl;
   cameraInterval: any;
 
   constructor(private _ws: WebsocketService,
     private _sanitizer: DomSanitizer,
+    private _storage: StorageService,
     private _modal: ModalController) {
   }
 
@@ -45,6 +50,10 @@ export class CameraTileComponent implements OnChanges, OnDestroy {
       componentProps: {'entity_id': this.entity_id}
     })
     return await modal.present();
+  }
+
+  deleteEntity() {
+    this._storage.deleteEntity(this.roomIndex, this.entityIndex)
   }
 
 }

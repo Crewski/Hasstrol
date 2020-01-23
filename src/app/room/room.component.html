@@ -35,7 +35,10 @@
   <ion-grid class="ion-no-padding hasstrol-grid">
     <ion-row dragula="bag" [(dragulaModel)]=" roomData.entities">
       <ion-col *ngFor="let entity of roomData.entities; let i = index" [size]="entity.split('.')[0] == 'camera' ? '3' : '1'" [ngSwitch]="entity.split('.')[0]" >
-        <app-camera-tile *ngSwitchCase="'camera'" [entity_id]="entity"></app-camera-tile>
+        <app-camera-tile *ngSwitchCase="'camera'" [entity_id]="entity" [roomIndex]="index" [entityIndex]="i"></app-camera-tile>
+        <app-light-tile *ngSwitchCase="'light'" [entity_id]="entity" [roomIndex]="index" [entityIndex]="i"></app-light-tile>
+        <app-sensor-tile *ngSwitchCase="'sensor'" [entity_id]="entity" [roomIndex]="index" [entityIndex]="i"></app-sensor-tile>
+        <app-climate-tile *ngSwitchCase="'climate'" [entity_id]="entity" [roomIndex]="index" [entityIndex]="i"></app-climate-tile>
         <entity-tile *ngSwitchDefault [entity_id]="entity" [roomIndex]="index" [entityIndex]="i"></entity-tile>
       </ion-col>
     </ion-row>

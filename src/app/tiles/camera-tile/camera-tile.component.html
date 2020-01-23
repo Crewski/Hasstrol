@@ -1,2 +1,7 @@
 
+  <ion-fab vertical="top" horizontal="end" slot="fixed" *ngIf="_storage.isEditing | async">
+    <ion-fab-button size="small" color="danger" (click)="deleteEntity()">
+      <ion-icon size="small" name="close"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 <img (click)="getStream()" class="camera-img" *ngIf="cameraimg" [src]="cameraimg" alt="Red dot" />

@@ -13,8 +13,8 @@ export class StorageService {
   LONG_LIVED = "longlived";
   SAVED_ROOMS = "savedrooms";
 
-
-  private isEditing: BehaviorSubject<boolean>;
+  private editStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public isEditing = this.editStatus.asObservable();
 
   public roomData: BehaviorSubject<any> = new BehaviorSubject<any>([{ name: 'Default Room', entities: [] }]);
   public savedRooms = this.roomData.asObservable();
@@ -26,15 +26,15 @@ export class StorageService {
         this.roomData.next(rooms);
       }
     });
-    this.isEditing = new BehaviorSubject<boolean>(false);
+    // this.isEditing = new BehaviorSubject<boolean>(false);
   }
 
   editingStatus(): Observable<boolean> {
-    return this.isEditing.asObservable();
+    return this.editStatus.asObservable();
   }
 
   setEditing(editing: boolean) {
-    this.isEditing.next(editing);
+    this.editStatus.next(editing);
   }
 
   addRoom() {

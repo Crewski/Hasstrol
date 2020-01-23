@@ -17,6 +17,10 @@ import { VgCoreModule } from '../../../node_modules/videogular2/compiled/core';
 import { VgControlsModule } from '../../../node_modules/videogular2/compiled/controls';
 import { VgOverlayPlayModule } from '../../../node_modules/videogular2/compiled/overlay-play';
 import { VgBufferingModule } from '../../../node_modules/videogular2/compiled/buffering';
+import { LightTileComponent } from '../tiles/light-tile/light-tile.component';
+import { SensorTileComponent } from '../tiles/sensor-tile/sensor-tile.component';
+import { CoverTileComponent } from '../tiles/cover-tile/cover-tile.component';
+import { ClimateTileComponent } from '../tiles/climate-tile/climate-tile.component';
 
 
 @NgModule({
@@ -41,8 +45,17 @@ import { VgBufferingModule } from '../../../node_modules/videogular2/compiled/bu
     EntityTileComponent,
     CameraTileComponent,
     RoomComponent,
-    CameraModalComponent
+    CameraModalComponent,
+    LightTileComponent,
+    SensorTileComponent,
+    CoverTileComponent,
+    ClimateTileComponent
   ],
-  entryComponents: [CameraModalComponent]
+  entryComponents: [CameraModalComponent,
+    LightTileComponent, 
+    SensorTileComponent, 
+    CoverTileComponent,
+    ClimateTileComponent
+  ]
 })
 export class HomePageModule {}
