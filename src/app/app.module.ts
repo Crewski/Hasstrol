@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -15,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx'
 import { DragulaModule } from 'ng2-dragula';
 import { IonicSelectableModule } from 'ionic-selectable';
+import { IonicGestureConfig } from './utils/IonicGestureConfig';
 
 @NgModule({
   declarations: [AppComponent,],
@@ -34,7 +35,11 @@ import { IonicSelectableModule } from 'ionic-selectable';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     WebsocketService,
     Push,
-    InAppBrowser
+    InAppBrowser,
+    {
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: IonicGestureConfig
+  }
   ],
   bootstrap: [AppComponent]
 })

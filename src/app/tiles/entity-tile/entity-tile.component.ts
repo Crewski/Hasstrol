@@ -18,6 +18,8 @@ export class EntityTileComponent implements OnInit {
   active: boolean = false;
   iconColor = 'rgb(255,255,255)';
   domain: string;
+  pressEvent: boolean = false;
+
 
   constructor(private _ws: WebsocketService, private _cd: ChangeDetectorRef, private _storage: StorageService) {
 
@@ -38,6 +40,26 @@ export class EntityTileComponent implements OnInit {
   }
 
   onPress() {
+    this.pressEvent = true;
+  }
+
+  onClick(){
+    if (this.pressEvent){
+      switch(this.domain){
+        case "light":
+          this.longPress();
+          break;
+        default:
+          this.shortPress();
+          break;
+      }
+    } else {
+      this.shortPress()
+    }
+    this.pressEvent = false;
+  }
+
+  shortPress() {
     switch (this.domain) {
       case "person":
       case "device_tracker":
@@ -52,6 +74,12 @@ export class EntityTileComponent implements OnInit {
         break;
     }
   }
+
+  longPress() {
+
+  }
+
+
 
   setIconDefault() {
     if (this.entity.attributes['device_class']) {
@@ -78,11 +106,11 @@ export class EntityTileComponent implements OnInit {
         case "switch":
           this.entity.attributes['icon'] = "mdi:flash";
           break;
-          case "binary_sensor":
-            this.entity.attributes['icon'] = "mdi:circle-outline";
-            break;
+        case "binary_sensor":
+          this.entity.attributes['icon'] = "mdi:circle-outline";
+          break;
         case "person":
-        case "device_tracker":          
+        case "device_tracker":
           this.entity.attributes['icon'] = "mdi:account";
           break;
       }
@@ -114,10 +142,10 @@ export class EntityTileComponent implements OnInit {
         break;
       case "device_tracker":
       case "person":
-        if (this.entity.state == 'home'){          
-        this.active = true;
-        this.iconColor = 'rgb(255,165,0)';
-        } else {          
+        if (this.entity.state == 'home') {
+          this.active = true;
+          this.iconColor = 'rgb(255,165,0)';
+        } else {
           this.active = false;
           this.iconColor = 'rgb(0,0,0)';
         }

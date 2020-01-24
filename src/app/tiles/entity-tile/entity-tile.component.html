@@ -5,7 +5,7 @@
               <ion-icon size="small" name="close"></ion-icon>
             </ion-fab-button>
           </ion-fab>
-        <div class="tile-content" (click)="onPress()" *ngIf="entity?.attributes" [ngClass]="active ? 'tile-background-on' : 'tile-background-off' ">            
+        <div class="tile-content" (click)="onClick()" (press)="onPress()" *ngIf="entity?.attributes" [ngClass]="active ? 'tile-background-on' : 'tile-background-off' ">            
             <div>
                 <div class="tile-icon-space" [ngClass]="active ? 'icon-on' : null"  [style.color]='iconColor'><span class="iconify" [attr.data-icon]='entity.attributes.icon' data-height="100%"></span></div>
                 <div class="tile-name-space"><div class="friendly-name" >{{entity.attributes.friendly_name}}</div></div>

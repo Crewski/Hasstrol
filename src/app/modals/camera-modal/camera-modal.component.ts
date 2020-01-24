@@ -28,7 +28,6 @@ export class CameraModalComponent implements OnInit {
   }
 
   closeModal(){
-    console.log("trying to close");
     this._modal.dismiss();
   }
 
