@@ -30,9 +30,6 @@ export class ClimateTileComponent implements OnInit {
     this._ws.getEntityData().subscribe(data => {
       if (data.findIndex(data => data.entity_id == this.entity_id) != -1) {
         this.entity = data.find(data => data.entity_id == this.entity_id);
-        // if (!this.entity.attributes['icon']) {
-        //   this.entity.attributes['icon'] = "mdi:lightbulb";
-        // }
         this.setActive();
         this._cd.detectChanges();
       }

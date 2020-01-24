@@ -14,7 +14,11 @@ const routes: Routes = [
   {
     path: 'settings',
     loadChildren: () => import('./settings/settings.module').then(m => m.SettingsPageModule)
+  },  {
+    path: 'map-view',
+    loadChildren: () => import('./map-view/map-view.module').then( m => m.MapViewPageModule)
   }
+
 ];
 
 @NgModule({

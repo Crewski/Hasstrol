@@ -4,6 +4,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ModalController } from '@ionic/angular';
 import { CameraModalComponent } from 'src/app/modals/camera-modal/camera-modal.component';
 import { StorageService } from 'src/app/services/storage.service';
+import { EntityData } from 'src/app/models/entity_data';
 
 @Component({
   selector: 'app-camera-tile',
@@ -18,6 +19,7 @@ export class CameraTileComponent implements OnChanges, OnDestroy {
 
   cameraimg: SafeResourceUrl;
   cameraInterval: any;
+  entity: EntityData;
 
   constructor(private _ws: WebsocketService,
     private _sanitizer: DomSanitizer,
@@ -26,7 +28,14 @@ export class CameraTileComponent implements OnChanges, OnDestroy {
   }
 
   ngOnChanges() {
+    
+
     if (this.entity_id) {
+      this._ws.getEntityData().subscribe(data => {
+        if (data.findIndex(data => data.entity_id == this.entity_id) != -1) {
+          this.entity = data.find(data => data.entity_id == this.entity_id);
+        }
+      })
       this._ws.getThumbnail(this.entity_id).then(res => {
         this.cameraimg = this._sanitizer.bypassSecurityTrustUrl("data:Image/*;base64," + res.result.content);
       })

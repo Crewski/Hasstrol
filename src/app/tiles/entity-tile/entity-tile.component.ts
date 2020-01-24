@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { WebsocketService } from '../../services/websocket.service';
 import { EntityData } from '../../models/entity_data';
 import { StorageService } from '../../services/storage.service';
+import { Router, NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'entity-tile',
@@ -21,7 +22,7 @@ export class EntityTileComponent implements OnInit {
   pressEvent: boolean = false;
 
 
-  constructor(private _ws: WebsocketService, private _cd: ChangeDetectorRef, private _storage: StorageService) {
+  constructor(private _ws: WebsocketService, private _cd: ChangeDetectorRef, private _storage: StorageService, private _router: Router) {
 
   }
 
@@ -63,7 +64,7 @@ export class EntityTileComponent implements OnInit {
     switch (this.domain) {
       case "person":
       case "device_tracker":
-        console.log(this.entity);
+        this.loadMap();
         break;
 
       default:
@@ -154,6 +155,15 @@ export class EntityTileComponent implements OnInit {
 
   deleteEntity() {
     this._storage.deleteEntity(this.roomIndex, this.entityIndex)
+  }
+
+  loadMap(){    
+    let navigationExtras: NavigationExtras = {
+      state: {
+        entity: this.entity
+      }
+    };
+    this._router.navigate(['map-view'], navigationExtras);
   }
 
 }

@@ -44,6 +44,7 @@ import { SpacedTextPipe } from '../pipes/spaced-text.pipe';
   declarations: [HomePage, 
     EntityTileComponent,
     CameraTileComponent,
+    
     RoomComponent,
     CameraModalComponent,
     LightTileComponent,
@@ -53,6 +54,7 @@ import { SpacedTextPipe } from '../pipes/spaced-text.pipe';
 
   ],
   entryComponents: [CameraModalComponent,
+    
     LightTileComponent, 
     CoverTileComponent,
     ClimateTileComponent

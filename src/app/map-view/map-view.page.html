@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar style="text-align: center">
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()" icon-only>
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      {{ entity.attributes?.friendly_name }} 
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button [style.visibility]="'hidden'" icon-only>
+        <ion-icon name="save"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<div style="height: 100%" #map_canvas id="map_canvas"></div>

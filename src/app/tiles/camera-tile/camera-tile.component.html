@@ -4,4 +4,5 @@
       <ion-icon size="small" name="close"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-<img (click)="getStream()" class="camera-img" *ngIf="cameraimg" [src]="cameraimg" alt="Red dot" />
+<img (click)="getStream()" class="camera-img" *ngIf="cameraimg" [src]="cameraimg" alt="Camera " />
+<div class="camera-name">{{entity?.attributes?.friendly_name}}</div>
